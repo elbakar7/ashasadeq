@@ -15,7 +15,6 @@
         if (!canvas) return { init: () => {}, destroy: () => {} };
 
         const ctx = canvas.getContext('2d');
-        let animationId;
         let particles = [];
         let width, height;
 
@@ -199,42 +198,33 @@
             }
         }
 
-        function animate() {
+        function renderFrame() {
             ctx.clearRect(0, 0, width, height);
 
-            // Draw large bokeh orbs first (background layer)
-            bokehOrbs.forEach(orb => {
-                orb.update();
-                orb.draw();
-            });
+            // Draw large bokeh orbs first (background layer) - static render
+            bokehOrbs.forEach(orb => orb.draw());
 
             // Draw connecting lines
             drawConnections();
 
-            // Draw particles
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-
-            animationId = requestAnimationFrame(animate);
+            // Draw particles - static render
+            particles.forEach(particle => particle.draw());
         }
 
         function init() {
             resize();
             createParticles();
-            animate();
+            renderFrame();
 
             window.addEventListener('resize', () => {
                 resize();
                 createParticles();
+                renderFrame();
             });
         }
 
         function destroy() {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
+            // No-op (background is intentionally static)
         }
 
         return { init, destroy };

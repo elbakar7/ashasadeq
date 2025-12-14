@@ -213,10 +213,96 @@ p {
     padding: var(--space-3xl) var(--space-md);
     position: relative;
     background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+    overflow: hidden;
+}
+
+/* Luxury geometric background pattern */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(90deg, rgba(184, 151, 126, 0.03) 1px, transparent 1px),
+        linear-gradient(rgba(184, 151, 126, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+}
+
+/* Elegant corner accent - top right */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -150px;
+    right: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(184, 151, 126, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Decorative diamond pattern overlay */
+.hero-content::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='none' stroke='%23B8977E' stroke-width='0.5' opacity='0.05'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .hero-content {
     max-width: var(--container-narrow);
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating golden orbs */
+.hero .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatOrb 8s ease-in-out infinite;
+}
+
+.hero .hero-orb-1 {
+    width: 300px;
+    height: 300px;
+    bottom: -100px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(184, 151, 126, 0.06) 0%, transparent 70%);
+    animation-delay: 0s;
+}
+
+.hero .hero-orb-2 {
+    width: 200px;
+    height: 200px;
+    top: 20%;
+    right: 10%;
+    background: radial-gradient(circle, rgba(30, 42, 58, 0.04) 0%, transparent 70%);
+    animation-delay: -2s;
+}
+
+.hero .hero-orb-3 {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    left: 15%;
+    background: radial-gradient(circle, rgba(184, 151, 126, 0.05) 0%, transparent 70%);
+    animation-delay: -4s;
+}
+
+@keyframes floatOrb {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
 }
 
 .hero-greeting {
@@ -364,6 +450,34 @@ p {
    ================================================ */
 .about {
     background-color: var(--color-surface);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle marble texture overlay */
+.about::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.015;
+    pointer-events: none;
+}
+
+/* Elegant diagonal line accent */
+.about::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, transparent 49%, rgba(184, 151, 126, 0.05) 50%, transparent 51%, transparent 100%);
+    background-size: 20px 20px;
+    pointer-events: none;
 }
 
 .about-content {
@@ -454,6 +568,38 @@ p {
    ================================================ */
 .experience {
     background-color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sophisticated horizontal lines pattern */
+.experience::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 100px,
+        rgba(184, 151, 126, 0.03) 100px,
+        rgba(184, 151, 126, 0.03) 101px
+    );
+    pointer-events: none;
+}
+
+/* Corner flourish accent */
+.experience::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(ellipse at bottom left, rgba(184, 151, 126, 0.06) 0%, transparent 60%);
+    pointer-events: none;
 }
 
 .timeline {

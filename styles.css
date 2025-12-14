@@ -39,6 +39,9 @@
     --transition-fast: 0.2s ease;
     --transition-base: 0.3s ease;
     --transition-slow: 0.5s ease;
+
+    /* Easing */
+    --ease-premium-out: cubic-bezier(0.16, 1, 0.3, 1);
     
     /* Shadows */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -231,7 +234,7 @@ p {
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.65;
+    opacity: 0.25;
 }
 
 /* ================================================
@@ -308,7 +311,6 @@ p {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    animation: floatOrb 8s ease-in-out infinite;
     z-index: 2;
 }
 
@@ -318,7 +320,6 @@ p {
     bottom: -100px;
     left: -100px;
     background: radial-gradient(circle, rgba(184, 151, 126, 0.06) 0%, transparent 70%);
-    animation-delay: 0s;
 }
 
 .hero .hero-orb-2 {
@@ -327,7 +328,6 @@ p {
     top: 20%;
     right: 10%;
     background: radial-gradient(circle, rgba(30, 42, 58, 0.04) 0%, transparent 70%);
-    animation-delay: -2s;
 }
 
 .hero .hero-orb-3 {
@@ -336,12 +336,6 @@ p {
     top: 60%;
     left: 15%;
     background: radial-gradient(circle, rgba(184, 151, 126, 0.05) 0%, transparent 70%);
-    animation-delay: -4s;
-}
-
-@keyframes floatOrb {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-30px) scale(1.05); }
 }
 
 /* Large watermark logo in hero */
@@ -435,12 +429,7 @@ p {
     width: 1px;
     height: 60px;
     background: linear-gradient(180deg, var(--color-text-muted) 0%, transparent 100%);
-    animation: scrollPulse 2s ease-in-out infinite;
-}
-
-@keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.1); }
+    opacity: 0.55;
 }
 
 /* ================================================
@@ -1343,6 +1332,50 @@ p {
    ANIMATIONS
    ================================================ */
 @media (prefers-reduced-motion: no-preference) {
+    /* Hero entrance: premium, calm, staged */
+    @keyframes heroFadeUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 10px, 0);
+            filter: saturate(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            filter: saturate(1);
+        }
+    }
+
+    body:not(.loaded) .hero-greeting,
+    body:not(.loaded) .hero-name,
+    body:not(.loaded) .hero-title,
+    body:not(.loaded) .hero-statement,
+    body:not(.loaded) .hero-cta,
+    body:not(.loaded) .hero-scroll {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+    }
+
+    body.loaded .hero-name,
+    body.loaded .hero-title,
+    body.loaded .hero-statement,
+    body.loaded .hero-cta,
+    body.loaded .hero-scroll,
+    body.loaded .hero-greeting {
+        will-change: opacity, transform, filter;
+        animation: heroFadeUp 0.75s var(--ease-premium-out) forwards;
+    }
+
+    /* Hierarchy in entrance (name → title → quote → CTA) */
+    body.loaded .hero-name { animation-delay: 0.2s; }
+    body.loaded .hero-title { animation-delay: 0.4s; }
+    body.loaded .hero-statement { animation-delay: 0.6s; }
+    body.loaded .hero-cta { animation-delay: 0.8s; }
+
+    /* Supporting elements (subtle, later) */
+    body.loaded .hero-greeting { animation-delay: 0.25s; }
+    body.loaded .hero-scroll { animation-delay: 1.1s; }
+
     .fade-in {
         opacity: 0;
         transform: translateY(20px);

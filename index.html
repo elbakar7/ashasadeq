@@ -9,6 +9,9 @@
     
     <title>Asha Abdulrahman | Chief Financial Officer</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +24,28 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-container">
-            <a href="#hero" class="nav-logo">AA</a>
+            <a href="#hero" class="nav-logo" aria-label="Asha Abdulrahman - Home">
+                <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Outer decorative ring -->
+                    <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
+                    <!-- Inner accent ring -->
+                    <circle cx="24" cy="24" r="18" stroke="#B8977E" stroke-width="0.75" opacity="0.6"/>
+                    <!-- Diamond accent at top -->
+                    <path d="M24 4L26 6L24 8L22 6L24 4Z" fill="#B8977E" opacity="0.8"/>
+                    <!-- Elegant AA Monogram -->
+                    <g transform="translate(24, 24)">
+                        <!-- First A - left -->
+                        <path d="M-8 8L-4 -6L0 8M-7 4H-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <!-- Second A - right, slightly overlapping -->
+                        <path d="M2 8L6 -6L10 8M3 4H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </g>
+                    <!-- Decorative corner accents -->
+                    <path d="M8 8L12 8L12 12" stroke="#B8977E" stroke-width="0.5" fill="none" opacity="0.5"/>
+                    <path d="M40 8L36 8L36 12" stroke="#B8977E" stroke-width="0.5" fill="none" opacity="0.5"/>
+                    <path d="M8 40L12 40L12 36" stroke="#B8977E" stroke-width="0.5" fill="none" opacity="0.5"/>
+                    <path d="M40 40L36 40L36 36" stroke="#B8977E" stroke-width="0.5" fill="none" opacity="0.5"/>
+                </svg>
+            </a>
             <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
@@ -38,6 +62,21 @@
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
+        <!-- Floating decorative orbs -->
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
+        
+        <!-- Large watermark logo -->
+        <svg class="hero-watermark" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="92" stroke="currentColor" stroke-width="1"/>
+            <circle cx="100" cy="100" r="75" stroke="currentColor" stroke-width="0.5"/>
+            <g transform="translate(100, 100)">
+                <path d="M-32 30L-16 -25L0 30M-27 15H-5" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <path d="M8 30L24 -25L40 30M13 15H35" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </g>
+        </svg>
+        
         <div class="hero-content">
             <p class="hero-greeting">Welcome</p>
             <h1 class="hero-name">Asha Abdulrahman</h1>

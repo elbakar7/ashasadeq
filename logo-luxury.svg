@@ -1,0 +1,118 @@
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="luxuryGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8D5B7"/>
+      <stop offset="25%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#B8977E"/>
+      <stop offset="75%" stop-color="#C9A961"/>
+      <stop offset="100%" stop-color="#8B7355"/>
+    </linearGradient>
+    <linearGradient id="darkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D3A4A"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="120" cy="120" r="118" fill="url(#darkGradient)"/>
+  
+  <!-- Outer ornate ring -->
+  <circle cx="120" cy="120" r="115" stroke="url(#luxuryGold)" stroke-width="2" fill="none"/>
+  
+  <!-- Decorative beaded circle -->
+  <g opacity="0.6">
+    <circle cx="120" cy="20" r="3" fill="url(#luxuryGold)"/>
+    <circle cx="120" cy="220" r="3" fill="url(#luxuryGold)"/>
+    <circle cx="20" cy="120" r="3" fill="url(#luxuryGold)"/>
+    <circle cx="220" cy="120" r="3" fill="url(#luxuryGold)"/>
+    
+    <!-- Diagonal beads -->
+    <circle cx="49" cy="49" r="2.5" fill="url(#luxuryGold)"/>
+    <circle cx="191" cy="49" r="2.5" fill="url(#luxuryGold)"/>
+    <circle cx="49" cy="191" r="2.5" fill="url(#luxuryGold)"/>
+    <circle cx="191" cy="191" r="2.5" fill="url(#luxuryGold)"/>
+  </g>
+  
+  <!-- Inner decorative ring -->
+  <circle cx="120" cy="120" r="95" stroke="url(#luxuryGold)" stroke-width="0.75" fill="none" opacity="0.5"/>
+  
+  <!-- Art deco corner flourishes -->
+  <g stroke="url(#luxuryGold)" stroke-width="1" fill="none" opacity="0.7">
+    <!-- Top left -->
+    <path d="M55 55L55 70M55 55L70 55"/>
+    <path d="M60 60L60 68M60 60L68 60"/>
+    
+    <!-- Top right -->
+    <path d="M185 55L185 70M185 55L170 55"/>
+    <path d="M180 60L180 68M180 60L172 60"/>
+    
+    <!-- Bottom left -->
+    <path d="M55 185L55 170M55 185L70 185"/>
+    <path d="M60 180L60 172M60 180L68 180"/>
+    
+    <!-- Bottom right -->
+    <path d="M185 185L185 170M185 185L170 185"/>
+    <path d="M180 180L180 172M180 180L172 180"/>
+  </g>
+  
+  <!-- Central medallion ring -->
+  <circle cx="120" cy="120" r="75" stroke="url(#luxuryGold)" stroke-width="1.5" fill="none"/>
+  
+  <!-- Laurel wreath elements - left side -->
+  <g opacity="0.4" transform="translate(120, 120)">
+    <path d="M-72 -20Q-65 -25 -60 -15Q-65 -10 -72 -20Z" fill="url(#luxuryGold)"/>
+    <path d="M-75 -5Q-68 -12 -62 -2Q-68 3 -75 -5Z" fill="url(#luxuryGold)"/>
+    <path d="M-75 10Q-68 3 -62 13Q-68 18 -75 10Z" fill="url(#luxuryGold)"/>
+    <path d="M-72 25Q-65 18 -58 28Q-65 35 -72 25Z" fill="url(#luxuryGold)"/>
+    
+    <!-- Right side -->
+    <path d="M72 -20Q65 -25 60 -15Q65 -10 72 -20Z" fill="url(#luxuryGold)"/>
+    <path d="M75 -5Q68 -12 62 -2Q68 3 75 -5Z" fill="url(#luxuryGold)"/>
+    <path d="M75 10Q68 3 62 13Q68 18 75 10Z" fill="url(#luxuryGold)"/>
+    <path d="M72 25Q65 18 58 28Q65 35 72 25Z" fill="url(#luxuryGold)"/>
+  </g>
+  
+  <!-- Top crown/diamond emblem -->
+  <g filter="url(#glow)">
+    <path d="M120 35L128 50L120 58L112 50L120 35Z" fill="url(#luxuryGold)"/>
+    <path d="M120 38L125 48L120 54L115 48L120 38Z" fill="#1A1A1A" opacity="0.3"/>
+  </g>
+  
+  <!-- Main AA Monogram - Premium serif style -->
+  <g transform="translate(120, 120)" filter="url(#glow)">
+    <!-- First A with serifs -->
+    <path d="M-38 35L-19 -30L0 35" stroke="#FAFAFA" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M-32 18H-6" stroke="#FAFAFA" stroke-width="4" stroke-linecap="round"/>
+    <!-- Decorative top serif -->
+    <path d="M-24 -30L-19 -35L-14 -30" stroke="url(#luxuryGold)" stroke-width="2" fill="none"/>
+    <!-- Base serifs -->
+    <line x1="-42" y1="35" x2="-34" y2="35" stroke="url(#luxuryGold)" stroke-width="2"/>
+    <line x1="-4" y1="35" x2="4" y2="35" stroke="url(#luxuryGold)" stroke-width="2"/>
+    
+    <!-- Second A with serifs -->
+    <path d="M8 35L27 -30L46 35" stroke="#FAFAFA" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M14 18H40" stroke="#FAFAFA" stroke-width="4" stroke-linecap="round"/>
+    <!-- Decorative top serif -->
+    <path d="M22 -30L27 -35L32 -30" stroke="url(#luxuryGold)" stroke-width="2" fill="none"/>
+    <!-- Base serifs -->
+    <line x1="4" y1="35" x2="12" y2="35" stroke="url(#luxuryGold)" stroke-width="2"/>
+    <line x1="42" y1="35" x2="50" y2="35" stroke="url(#luxuryGold)" stroke-width="2"/>
+  </g>
+  
+  <!-- Bottom decorative element -->
+  <g transform="translate(120, 195)">
+    <line x1="-30" y1="0" x2="-10" y2="0" stroke="url(#luxuryGold)" stroke-width="1" opacity="0.6"/>
+    <circle cx="0" cy="0" r="3" fill="url(#luxuryGold)" opacity="0.8"/>
+    <line x1="10" y1="0" x2="30" y2="0" stroke="url(#luxuryGold)" stroke-width="1" opacity="0.6"/>
+  </g>
+  
+  <!-- CFO text below monogram -->
+  <text x="120" y="175" text-anchor="middle" fill="url(#luxuryGold)" font-family="serif" font-size="12" letter-spacing="8" opacity="0.7">CFO</text>
+</svg>

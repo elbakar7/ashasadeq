@@ -1,0 +1,66 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background glow -->
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#B8977E" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#B8977E" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#B8977E"/>
+      <stop offset="100%" stop-color="#8B7355"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Subtle background glow -->
+  <circle cx="100" cy="100" r="95" fill="url(#bgGlow)"/>
+  
+  <!-- Outer decorative ring -->
+  <circle cx="100" cy="100" r="92" stroke="#1A1A1A" stroke-width="1" opacity="0.2"/>
+  
+  <!-- Secondary ring with gold accent -->
+  <circle cx="100" cy="100" r="85" stroke="url(#goldGradient)" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Inner elegant ring -->
+  <circle cx="100" cy="100" r="75" stroke="#1A1A1A" stroke-width="0.5" opacity="0.15"/>
+  
+  <!-- Diamond accent at top -->
+  <path d="M100 12L105 20L100 28L95 20L100 12Z" fill="url(#goldGradient)" opacity="0.9"/>
+  
+  <!-- Diamond accent at bottom -->
+  <path d="M100 188L105 180L100 172L95 180L100 188Z" fill="url(#goldGradient)" opacity="0.9"/>
+  
+  <!-- Side diamond accents -->
+  <path d="M12 100L20 105L28 100L20 95L12 100Z" fill="url(#goldGradient)" opacity="0.6"/>
+  <path d="M188 100L180 105L172 100L180 95L188 100Z" fill="url(#goldGradient)" opacity="0.6"/>
+  
+  <!-- Decorative corner brackets -->
+  <g stroke="url(#goldGradient)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M35 35L50 35L50 50"/>
+    <path d="M165 35L150 35L150 50"/>
+    <path d="M35 165L50 165L50 150"/>
+    <path d="M165 165L150 165L150 150"/>
+  </g>
+  
+  <!-- Main AA Monogram - Elegant serif style -->
+  <g transform="translate(100, 100)">
+    <!-- First A - sophisticated design -->
+    <path d="M-32 30L-16 -25L0 30" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M-27 15H-5" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+    <!-- Small decorative serif on first A -->
+    <path d="M-20 -25L-16 -28L-12 -25" stroke="url(#goldGradient)" stroke-width="1.5" fill="none" opacity="0.8"/>
+    
+    <!-- Second A - slightly offset for depth -->
+    <path d="M8 30L24 -25L40 30" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M13 15H35" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+    <!-- Small decorative serif on second A -->
+    <path d="M20 -25L24 -28L28 -25" stroke="url(#goldGradient)" stroke-width="1.5" fill="none" opacity="0.8"/>
+  </g>
+  
+  <!-- Subtle connecting flourish between the A's -->
+  <path d="M95 115Q100 108 105 115" stroke="url(#goldGradient)" stroke-width="1" fill="none" opacity="0.6"/>
+  
+  <!-- Small decorative dots -->
+  <circle cx="100" cy="55" r="2" fill="url(#goldGradient)" opacity="0.7"/>
+  <circle cx="100" cy="145" r="2" fill="url(#goldGradient)" opacity="0.7"/>
+</svg>

@@ -44,6 +44,10 @@
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
     --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+    
+    /* Luxury Accents */
+    --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #B8977E 50%, #8B7355 100%);
+    --luxury-pattern-opacity: 0.04;
 }
 
 /* Reset & Base */
@@ -148,6 +152,23 @@ p {
     font-weight: 600;
     letter-spacing: 0.05em;
     color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-svg {
+    width: 48px;
+    height: 48px;
+    transition: var(--transition-base);
+}
+
+.logo-svg:hover {
+    transform: scale(1.05);
+}
+
+.logo-svg:hover circle:nth-child(2) {
+    opacity: 1;
 }
 
 .nav-menu {
@@ -213,10 +234,124 @@ p {
     padding: var(--space-3xl) var(--space-md);
     position: relative;
     background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+    overflow: hidden;
+}
+
+/* Luxury geometric background pattern */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(90deg, rgba(184, 151, 126, 0.03) 1px, transparent 1px),
+        linear-gradient(rgba(184, 151, 126, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+}
+
+/* Elegant corner accent - top right */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -150px;
+    right: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(184, 151, 126, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Decorative diamond pattern overlay */
+.hero-content::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='none' stroke='%23B8977E' stroke-width='0.5' opacity='0.05'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .hero-content {
     max-width: var(--container-narrow);
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating golden orbs */
+.hero .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatOrb 8s ease-in-out infinite;
+}
+
+.hero .hero-orb-1 {
+    width: 300px;
+    height: 300px;
+    bottom: -100px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(184, 151, 126, 0.06) 0%, transparent 70%);
+    animation-delay: 0s;
+}
+
+.hero .hero-orb-2 {
+    width: 200px;
+    height: 200px;
+    top: 20%;
+    right: 10%;
+    background: radial-gradient(circle, rgba(30, 42, 58, 0.04) 0%, transparent 70%);
+    animation-delay: -2s;
+}
+
+.hero .hero-orb-3 {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    left: 15%;
+    background: radial-gradient(circle, rgba(184, 151, 126, 0.05) 0%, transparent 70%);
+    animation-delay: -4s;
+}
+
+@keyframes floatOrb {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+}
+
+/* Large watermark logo in hero */
+.hero-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Animated shimmer effect for luxury feel */
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+.shimmer-accent {
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(184, 151, 126, 0.1) 50%, 
+        transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
 }
 
 .hero-greeting {
@@ -310,11 +445,29 @@ p {
 .btn-primary {
     background-color: var(--color-navy);
     color: var(--color-surface);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary:hover {
     background-color: var(--color-text);
     transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(30, 42, 58, 0.3);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
 }
 
 .btn-secondary {
@@ -338,6 +491,25 @@ p {
    ================================================ */
 .section {
     padding: var(--space-3xl) 0;
+    position: relative;
+}
+
+/* Elegant section divider */
+.section::before {
+    z-index: 1;
+}
+
+.section .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Decorative line divider between sections */
+.section-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+    margin: 0 auto var(--space-lg);
 }
 
 .section-header {
@@ -364,6 +536,34 @@ p {
    ================================================ */
 .about {
     background-color: var(--color-surface);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle marble texture overlay */
+.about::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.015;
+    pointer-events: none;
+}
+
+/* Elegant diagonal line accent */
+.about::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, transparent 49%, rgba(184, 151, 126, 0.05) 50%, transparent 51%, transparent 100%);
+    background-size: 20px 20px;
+    pointer-events: none;
 }
 
 .about-content {
@@ -402,6 +602,19 @@ p {
     border: 1px solid var(--color-accent);
     border-radius: 2px;
     z-index: -1;
+}
+
+/* Decorative corner accents on image */
+.about-image::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 40px;
+    height: 40px;
+    border-top: 2px solid var(--color-accent);
+    border-left: 2px solid var(--color-accent);
+    opacity: 0.6;
 }
 
 .about-text {
@@ -454,6 +667,38 @@ p {
    ================================================ */
 .experience {
     background-color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sophisticated horizontal lines pattern */
+.experience::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 100px,
+        rgba(184, 151, 126, 0.03) 100px,
+        rgba(184, 151, 126, 0.03) 101px
+    );
+    pointer-events: none;
+}
+
+/* Corner flourish accent */
+.experience::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(ellipse at bottom left, rgba(184, 151, 126, 0.06) 0%, transparent 60%);
+    pointer-events: none;
 }
 
 .timeline {
@@ -508,6 +753,7 @@ p {
 
 .timeline-content:hover {
     box-shadow: var(--shadow-md);
+    border-left: 2px solid var(--color-accent);
 }
 
 .timeline-date {
@@ -558,6 +804,34 @@ p {
    ================================================ */
 .competencies {
     background-color: var(--color-surface);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Elegant hexagonal pattern for expertise */
+.competencies::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 5L90 27.5V72.5L50 95L10 72.5V27.5L50 5z' fill='none' stroke='%23B8977E' stroke-width='0.3' opacity='0.15'/%3E%3C/svg%3E");
+    background-size: 100px 100px;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Gradient wash overlay */
+.competencies::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -20%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(184, 151, 126, 0.03) 50%, transparent 100%);
+    pointer-events: none;
 }
 
 .competencies-grid {
@@ -571,11 +845,30 @@ p {
     background-color: var(--color-bg);
     border: 1px solid var(--color-border);
     transition: var(--transition-base);
+    position: relative;
+    overflow: hidden;
 }
 
 .competency-card:hover {
     border-color: var(--color-accent);
     box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+
+/* Gold accent line on hover */
+.competency-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold-gradient);
+    transition: var(--transition-base);
+}
+
+.competency-card:hover::after {
+    width: 100%;
 }
 
 .competency-icon {
@@ -606,6 +899,34 @@ p {
    ================================================ */
 .education {
     background-color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Academic-inspired book/page pattern */
+.education::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(90deg, transparent 0%, transparent 50%, rgba(184, 151, 126, 0.02) 50%, rgba(184, 151, 126, 0.02) 100%);
+    background-size: 40px 100%;
+    pointer-events: none;
+}
+
+/* Decorative corner wreath accent */
+.education::after {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(184, 151, 126, 0.08) 0%, transparent 65%);
+    pointer-events: none;
 }
 
 .education-grid {
@@ -619,10 +940,30 @@ p {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     transition: var(--transition-base);
+    position: relative;
+    overflow: hidden;
 }
 
 .education-card:hover {
     border-color: var(--color-accent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Gold accent line on hover */
+.education-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 0;
+    background: var(--gold-gradient);
+    transition: var(--transition-base);
+}
+
+.education-card:hover::after {
+    height: 100%;
 }
 
 .education-year {
@@ -679,6 +1020,33 @@ p {
 .contact {
     background-color: var(--color-navy);
     color: var(--color-surface);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sophisticated art deco pattern */
+.contact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23B8977E' stroke-width='0.5' opacity='0.08'%3E%3Cpath d='M0 40h80M40 0v80'/%3E%3Ccircle cx='40' cy='40' r='20'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 80px 80px;
+    pointer-events: none;
+}
+
+/* Elegant gradient overlay */
+.contact::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(184, 151, 126, 0.05) 0%, transparent 40%, transparent 60%, rgba(184, 151, 126, 0.03) 100%);
+    pointer-events: none;
 }
 
 .contact .section-label {
@@ -790,6 +1158,20 @@ p {
     padding: var(--space-xl) 0;
     background-color: var(--color-text);
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle top border accent */
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--color-accent) 50%, transparent 100%);
 }
 
 .footer-content {

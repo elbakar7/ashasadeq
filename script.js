@@ -7,6 +7,245 @@
     'use strict';
 
     // ================================================
+    // LUXURY ANIMATED BACKGROUND
+    // Elegant floating particles with golden bokeh effect
+    // ================================================
+    const luxuryBackground = (function() {
+        const canvas = document.getElementById('luxury-bg');
+        if (!canvas) return { init: () => {}, destroy: () => {} };
+
+        const ctx = canvas.getContext('2d');
+        let animationId;
+        let particles = [];
+        let width, height;
+
+        // Luxury color palette
+        const colors = {
+            gold: 'rgba(184, 151, 126,',      // Primary gold
+            goldLight: 'rgba(212, 175, 55,',   // Bright gold
+            champagne: 'rgba(247, 231, 206,',  // Soft champagne
+            navy: 'rgba(30, 42, 58,',          // Deep navy accent
+        };
+
+        // Particle class for elegant floating elements
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.opacitySpeed = (Math.random() - 0.5) * 0.005;
+                this.colorType = Math.random();
+                this.pulsePhase = Math.random() * Math.PI * 2;
+                this.pulseSpeed = 0.01 + Math.random() * 0.02;
+            }
+
+            update() {
+                // Gentle floating movement
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Subtle pulse effect
+                this.pulsePhase += this.pulseSpeed;
+                const pulse = Math.sin(this.pulsePhase) * 0.2 + 1;
+                this.currentSize = this.size * pulse;
+
+                // Opacity breathing effect
+                this.opacity += this.opacitySpeed;
+                if (this.opacity > 0.6 || this.opacity < 0.05) {
+                    this.opacitySpeed *= -1;
+                }
+
+                // Wrap around screen edges
+                if (this.x < -10) this.x = width + 10;
+                if (this.x > width + 10) this.x = -10;
+                if (this.y < -10) this.y = height + 10;
+                if (this.y > height + 10) this.y = -10;
+            }
+
+            draw() {
+                // Choose color based on particle type
+                let color;
+                if (this.colorType < 0.5) {
+                    color = colors.gold;
+                } else if (this.colorType < 0.75) {
+                    color = colors.goldLight;
+                } else if (this.colorType < 0.9) {
+                    color = colors.champagne;
+                } else {
+                    color = colors.navy;
+                }
+
+                // Draw soft bokeh circle with gradient
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.currentSize * 3
+                );
+                gradient.addColorStop(0, color + this.opacity + ')');
+                gradient.addColorStop(0.5, color + (this.opacity * 0.5) + ')');
+                gradient.addColorStop(1, color + '0)');
+
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.currentSize * 3, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                // Add bright center point
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.currentSize * 0.5, 0, Math.PI * 2);
+                ctx.fillStyle = color + (this.opacity * 1.5) + ')';
+                ctx.fill();
+            }
+        }
+
+        // Larger floating orb class for bokeh effect
+        class BokehOrb {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 80 + 40;
+                this.speedX = (Math.random() - 0.5) * 0.15;
+                this.speedY = (Math.random() - 0.5) * 0.15;
+                this.opacity = Math.random() * 0.08 + 0.02;
+                this.colorType = Math.random();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Gentle boundary bounce
+                if (this.x < -this.size || this.x > width + this.size) {
+                    this.speedX *= -1;
+                }
+                if (this.y < -this.size || this.y > height + this.size) {
+                    this.speedY *= -1;
+                }
+            }
+
+            draw() {
+                const color = this.colorType < 0.7 ? colors.gold : colors.champagne;
+                
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.size
+                );
+                gradient.addColorStop(0, color + (this.opacity * 0.8) + ')');
+                gradient.addColorStop(0.4, color + (this.opacity * 0.3) + ')');
+                gradient.addColorStop(1, color + '0)');
+
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            }
+        }
+
+        // Elegant connecting line between nearby particles
+        function drawConnections() {
+            const maxDistance = 150;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < maxDistance) {
+                        const opacity = (1 - distance / maxDistance) * 0.1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = colors.gold + opacity + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        let bokehOrbs = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        function createParticles() {
+            particles = [];
+            bokehOrbs = [];
+            
+            // Create small floating particles
+            const particleCount = Math.min(60, Math.floor((width * height) / 20000));
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            // Create large bokeh orbs
+            const orbCount = Math.min(8, Math.floor(width / 200));
+            for (let i = 0; i < orbCount; i++) {
+                bokehOrbs.push(new BokehOrb());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw large bokeh orbs first (background layer)
+            bokehOrbs.forEach(orb => {
+                orb.update();
+                orb.draw();
+            });
+
+            // Draw connecting lines
+            drawConnections();
+
+            // Draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function init() {
+            resize();
+            createParticles();
+            animate();
+
+            window.addEventListener('resize', () => {
+                resize();
+                createParticles();
+            });
+        }
+
+        function destroy() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        }
+
+        return { init, destroy };
+    })();
+
+    // Initialize luxury background
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        luxuryBackground.init();
+    }
+
+    // ================================================
     // DOM Elements
     // ================================================
     const nav = document.getElementById('nav');

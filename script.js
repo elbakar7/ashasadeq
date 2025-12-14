@@ -6,17 +6,29 @@
 (function() {
     'use strict';
 
+    // Mark JS support early so CSS can safely animate without "blank hero" risk
+    document.documentElement.classList.add('js');
+
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+
     // ================================================
     // LUXURY ANIMATED BACKGROUND
-    // Elegant floating particles with golden bokeh effect
+    // Elegant floating particles with golden bokeh effect (hero-only)
     // ================================================
     const luxuryBackground = (function() {
         const canvas = document.getElementById('luxury-bg');
-        if (!canvas) return { init: () => {}, destroy: () => {} };
+        const hero = document.getElementById('hero');
+        if (!canvas || !hero) return { init: () => {}, destroy: () => {} };
 
         const ctx = canvas.getContext('2d');
         let particles = [];
         let width, height;
+        let dpr = 1;
+        let rafId = null;
+        let lastTime = 0;
+        let running = false;
+        let resizeObserver = null;
+        let intersectionObserver = null;
 
         // Luxury color palette
         const colors = {
@@ -36,8 +48,8 @@
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
                 this.size = Math.random() * 3 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.3;
-                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.35;
+                this.speedY = (Math.random() - 0.5) * 0.35;
                 this.opacity = Math.random() * 0.5 + 0.1;
                 this.opacitySpeed = (Math.random() - 0.5) * 0.005;
                 this.colorType = Math.random();
@@ -45,18 +57,19 @@
                 this.pulseSpeed = 0.01 + Math.random() * 0.02;
             }
 
-            update() {
+            update(dt) {
                 // Gentle floating movement
-                this.x += this.speedX;
-                this.y += this.speedY;
+                const s = dt / 16.67; // normalize to ~60fps
+                this.x += this.speedX * s;
+                this.y += this.speedY * s;
 
                 // Subtle pulse effect
-                this.pulsePhase += this.pulseSpeed;
+                this.pulsePhase += this.pulseSpeed * s;
                 const pulse = Math.sin(this.pulsePhase) * 0.2 + 1;
                 this.currentSize = this.size * pulse;
 
                 // Opacity breathing effect
-                this.opacity += this.opacitySpeed;
+                this.opacity += this.opacitySpeed * s;
                 if (this.opacity > 0.6 || this.opacity < 0.05) {
                     this.opacitySpeed *= -1;
                 }
@@ -113,15 +126,19 @@
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
                 this.size = Math.random() * 80 + 40;
-                this.speedX = (Math.random() - 0.5) * 0.15;
-                this.speedY = (Math.random() - 0.5) * 0.15;
+                this.speedX = (Math.random() - 0.5) * 0.12;
+                this.speedY = (Math.random() - 0.5) * 0.12;
                 this.opacity = Math.random() * 0.08 + 0.02;
                 this.colorType = Math.random();
+                this.phase = Math.random() * Math.PI * 2;
+                this.phaseSpeed = 0.002 + Math.random() * 0.004;
             }
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+            update(dt) {
+                const s = dt / 16.67;
+                this.x += this.speedX * s;
+                this.y += this.speedY * s;
+                this.phase += this.phaseSpeed * s;
 
                 // Gentle boundary bounce
                 if (this.x < -this.size || this.x > width + this.size) {
@@ -134,6 +151,7 @@
 
             draw() {
                 const color = this.colorType < 0.7 ? colors.gold : colors.champagne;
+                const breathe = Math.sin(this.phase) * 0.12 + 1;
                 
                 const gradient = ctx.createRadialGradient(
                     this.x, this.y, 0,
@@ -144,7 +162,7 @@
                 gradient.addColorStop(1, color + '0)');
 
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size * breathe, 0, Math.PI * 2);
                 ctx.fillStyle = gradient;
                 ctx.fill();
             }
@@ -152,7 +170,7 @@
 
         // Elegant connecting line between nearby particles
         function drawConnections() {
-            const maxDistance = 150;
+            const maxDistance = Math.min(160, Math.max(120, Math.floor(Math.min(width, height) * 0.2)));
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
@@ -175,10 +193,17 @@
         let bokehOrbs = [];
 
         function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
+            const rect = hero.getBoundingClientRect();
+            width = Math.max(1, Math.floor(rect.width));
+            height = Math.max(1, Math.floor(rect.height));
+
+            dpr = Math.min(2, window.devicePixelRatio || 1);
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
         function createParticles() {
@@ -186,54 +211,123 @@
             bokehOrbs = [];
             
             // Create small floating particles
-            const particleCount = Math.min(60, Math.floor((width * height) / 20000));
+            const particleCount = Math.min(85, Math.floor((width * height) / 16000));
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle());
             }
 
             // Create large bokeh orbs
-            const orbCount = Math.min(8, Math.floor(width / 200));
+            const orbCount = Math.min(10, Math.max(5, Math.floor(width / 180)));
             for (let i = 0; i < orbCount; i++) {
                 bokehOrbs.push(new BokehOrb());
             }
         }
 
-        function renderFrame() {
+        function drawLuxSweep(t) {
+            // A very subtle moving highlight sweep for "luxury" feel
+            const x = (t * 0.02) % (width + 400) - 200;
+            const sweep = ctx.createLinearGradient(x - 200, 0, x + 200, height);
+            sweep.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            sweep.addColorStop(0.5, 'rgba(255, 255, 255, 0.06)');
+            sweep.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = sweep;
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        function renderFrame(dt, now) {
             ctx.clearRect(0, 0, width, height);
 
-            // Draw large bokeh orbs first (background layer) - static render
+            // Update motion
+            bokehOrbs.forEach(orb => orb.update(dt));
+            particles.forEach(particle => particle.update(dt));
+
+            // Draw large bokeh orbs first (background layer)
             bokehOrbs.forEach(orb => orb.draw());
 
             // Draw connecting lines
             drawConnections();
 
-            // Draw particles - static render
+            // Draw particles
             particles.forEach(particle => particle.draw());
+
+            // Top highlight sweep
+            drawLuxSweep(now);
+        }
+
+        function loop(now) {
+            if (!running) return;
+            const dt = Math.min(48, Math.max(8, now - lastTime || 16.67));
+            lastTime = now;
+            renderFrame(dt, now);
+            rafId = window.requestAnimationFrame(loop);
         }
 
         function init() {
             resize();
             createParticles();
-            renderFrame();
 
-            window.addEventListener('resize', () => {
-                resize();
-                createParticles();
-                renderFrame();
-            });
+            // Use ResizeObserver when available to match the hero size exactly
+            if ('ResizeObserver' in window) {
+                resizeObserver = new ResizeObserver(() => {
+                    resize();
+                    createParticles();
+                });
+                resizeObserver.observe(hero);
+            } else {
+                window.addEventListener('resize', onWindowResize, { passive: true });
+            }
+
+            // Pause when hero is off-screen
+            if ('IntersectionObserver' in window) {
+                intersectionObserver = new IntersectionObserver((entries) => {
+                    const entry = entries[0];
+                    const shouldRun = !!entry && entry.isIntersecting;
+                    if (shouldRun) start();
+                    else stop();
+                }, { root: null, threshold: 0.05 });
+                intersectionObserver.observe(hero);
+            }
+
+            start();
+        }
+
+        function onWindowResize() {
+            resize();
+            createParticles();
+        }
+
+        function start() {
+            if (running) return;
+            running = true;
+            lastTime = performance.now();
+            rafId = window.requestAnimationFrame(loop);
+        }
+
+        function stop() {
+            running = false;
+            if (rafId) window.cancelAnimationFrame(rafId);
+            rafId = null;
         }
 
         function destroy() {
-            // No-op (background is intentionally static)
+            stop();
+            if (resizeObserver) {
+                resizeObserver.disconnect();
+                resizeObserver = null;
+            } else {
+                window.removeEventListener('resize', onWindowResize);
+            }
+            if (intersectionObserver) {
+                intersectionObserver.disconnect();
+                intersectionObserver = null;
+            }
         }
 
         return { init, destroy };
     })();
 
     // Initialize luxury background
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        luxuryBackground.init();
-    }
+    if (!prefersReducedMotion || !prefersReducedMotion.matches) luxuryBackground.init();
 
     // ================================================
     // DOM Elements
@@ -446,23 +540,31 @@
     // ================================================
     // Initialize on DOM Ready
     // ================================================
-    document.addEventListener('DOMContentLoaded', function() {
+    function onReady() {
         // Initial scroll check
         handleNavScroll();
         highlightActiveNavLink();
         
         // Add loaded class to body for any CSS transitions
-        document.body.classList.add('loaded');
-    });
+        window.requestAnimationFrame(() => {
+            document.body.classList.add('loaded');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', onReady);
+    } else {
+        onReady();
+    }
 
     // ================================================
     // Handle page visibility for performance
     // ================================================
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            // Page is hidden, pause any animations if needed
+            luxuryBackground.destroy();
         } else {
-            // Page is visible again
+            if (!prefersReducedMotion || !prefersReducedMotion.matches) luxuryBackground.init();
         }
     });
 
